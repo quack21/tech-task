@@ -1,0 +1,179 @@
+.container {
+  width: calc(100% - 260px);
+  height: 600px;
+  .settings {
+    position: relative;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    margin-top: 5px;
+    margin-right: 15px;
+
+    .modalSettings {
+      position: absolute;
+      top: 26px;
+      right: 26px;
+      width: 240px;
+      height: 200px;
+      border: 1px solid rgb(0, 0, 0);
+      border-radius: 3px;
+
+      .chooseContainer {
+        width: 100%;
+        height: 40px;
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+        align-items: center;
+
+        .choose {
+          width: 100%;
+          height: 100%;
+          text-transform: uppercase;
+          display: flex;
+          align-items: center;
+
+          &:hover {
+            background-color: rgb(238, 238, 238);
+          }
+
+          .selectSVG {
+            margin-left: 10px;
+            margin-right: 10px;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .settingsBtn {
+      stroke: rgb(75, 75, 75);
+      stroke-width: 20;
+
+      &:hover {
+        stroke: black;
+        stroke-width: 24;
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .content {
+    overflow: auto;
+    width: calc(100% - 100px);
+    border: 1px solid rgb(224, 224, 224);
+    border-radius: 10px;
+    height: 100%;
+    margin: 5px 20px 0 50px;
+    display: flex;
+    flex-direction: column;
+
+    &::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+      background-color: #f9f9fd;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background-color: #dddddd;
+    }
+
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+      background-color: #f9f9fd;
+    }
+    .row {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .sortBtn {
+        fill: grey;
+
+        &:hover {
+          fill: black;
+        }
+      }
+
+      .editBtn {
+        fill: grey;
+        stroke: grey;
+        stroke-width: 2;
+
+        &:hover {
+          fill: black;
+          stroke: black;
+        }
+      }
+
+      &:hover {
+        transition: 0.15s ease-in-out;
+        background-color: rgba(209, 209, 255, 0.158);
+      }
+
+      &:first-of-type {
+        .tab {
+          text-transform: uppercase;
+          .filter {
+            &:hover {
+              fill: black;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+
+      .tab {
+        min-width: 200px;
+        width: 240px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 5px;
+        border-radius: 4px;
+        .value {
+          margin-left: 10px;
+
+          .editBtn {
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
+        .filter {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+  .pagination {
+    margin-top: 25px;
+    padding-bottom: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: grey;
+    .count {
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+
+    button {
+      width: 70px;
+      height: 30px;
+      border-radius: 5px;
+      border: 0px;
+      color: grey;
+
+      &:hover {
+        background-color: rgb(206, 206, 206);
+        cursor: pointer;
+      }
+    }
+  }
+}
