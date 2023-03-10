@@ -1,18 +1,58 @@
 import React from 'react';
 import styles from './content.module.scss';
 import data from '../../assets/data.json';
-
-const categories = ['id', 'name', 'sex', 'job', 'birthday', 'edit'];
-
-const activeCategories = { id: true, name: true, sex: true, job: true, birthday: true, edit: true };
+import { Reorder } from 'framer-motion';
 
 function Content() {
+  const [renew, setRenew] = React.useState(0);
   const [open, setOpen] = React.useState(false);
+  const [currentCard, setCurrentCard] = React.useState(null);
+  const [categories, setCategories] = React.useState([
+    { appellation: 'id', property: true, order: 1, id: 1 },
+    { appellation: 'name', property: true, order: 2, id: 2 },
+    { appellation: 'sex', property: true, order: 3, id: 3 },
+    { appellation: 'job', property: true, order: 4, id: 4 },
+    { appellation: 'birthday', property: true, order: 5, id: 5 },
+  ]);
 
-  function chooseTabs(value, i) {
-    activeCategories[value] = !activeCategories[value];
+  function chooseTabs(i) {
+    categories[i].property = !categories[i].property;
     setOpen(false);
   }
+
+  function dragStartHandler(e, card) {
+    setCurrentCard(card);
+  }
+  function dragEndHandler(e) {
+    e.target.style.background = 'white';
+  }
+  function dragOverHandler(e) {
+    e.preventDefault();
+    e.target.style.background = 'lightgrey';
+  }
+  function dropHandler(e, card) {
+    e.preventDefault();
+    setCategories(
+      categories.map((c) => {
+        if (c.id === card.id) {
+          return { ...c, order: currentCard.order };
+        }
+        if (c.id === currentCard.id) {
+          return { ...c, order: card.order };
+        }
+        return c;
+      }),
+    );
+    e.target.style.background = 'white';
+  }
+
+  const sortCards = (a, b) => {
+    if (a.order > b.order) {
+      return 1;
+    } else {
+      return -1;
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -30,10 +70,22 @@ function Content() {
         </svg>
         {open ? (
           <div className={styles.modalSettings}>
-            {categories.slice(0, 5).map((value, i) => (
-              <div className={styles.chooseContainer}>
-                <div className={styles.choose} onClick={() => chooseTabs(value, i)}>
+            {categories.sort(sortCards).map((value, i) => (
+              <div
+                className={styles.chooseContainer}
+                key={value.appellation + 'o'}
+                draggable={true}
+                onDragStart={(e) => dragStartHandler(e, value)}
+                onDragLeave={(e) => dragEndHandler(e)}
+                onDragEnd={(e) => dragEndHandler(e)}
+                onDragOver={(e) => dragOverHandler(e)}
+                onDrop={(e) => dropHandler(e, value)}>
+                <div
+                  key={value.appellation + 'p'}
+                  className={styles.choose}
+                  onClick={() => chooseTabs(i)}>
                   <svg
+                    key={value.appellation + 'q'}
                     className={styles.selectSVG}
                     width="20"
                     height="20"
@@ -42,7 +94,7 @@ function Content() {
                     xmlns="http://www.w3.org/2000/svg">
                     <path
                       d="M31.4517 11.3659C31.8429 10.7366 32.7589 10.7366 33.1501 11.3659L40.2946 22.8568C40.4323 23.0782 40.651 23.2371 40.9041 23.2996L54.0403 26.5435C54.7598 26.7212 55.0428 27.5923 54.5652 28.1589L45.8445 38.5045C45.6764 38.7039 45.5929 38.961 45.6117 39.221L46.5858 52.7168C46.6392 53.4559 45.8982 53.9942 45.2117 53.7151L32.6776 48.6182C32.4361 48.52 32.1657 48.52 31.9242 48.6182L19.39 53.7151C18.7036 53.9942 17.9626 53.4559 18.016 52.7168L18.9901 39.221C19.0089 38.961 18.9253 38.7039 18.7573 38.5045L10.0366 28.1589C9.559 27.5923 9.84204 26.7212 10.5615 26.5435L23.6977 23.2996C23.9508 23.2371 24.1695 23.0782 24.3072 22.8568L31.4517 11.3659Z"
-                      fill={activeCategories[value] === true ? 'yellow' : 'white'}
+                      fill={categories[i].property === true ? 'yellow' : 'white'}
                     />
                     <path
                       fill-rule="evenodd"
@@ -51,7 +103,7 @@ function Content() {
                       fill="black"
                     />
                   </svg>
-                  {value}
+                  {categories[i].appellation}
                 </div>
               </div>
             ))}
@@ -62,78 +114,92 @@ function Content() {
       </div>
       <div className={styles.content}>
         <div className={styles.row}>
-          {categories.map((value) =>
-            activeCategories[value] === true ? (
-              <div className={styles.tab}>
-                <div className={styles.value}>{value}</div>
-                <div className={styles.filter}>
-                  {value !== 'edit' ? (
-                    <svg
-                      className={styles.sortBtn}
-                      width="20"
-                      height="20"
-                      viewBox="20 6 26 42"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
-                        d="M14 21C14 19.8954 14.8954 19 16 19H49C50.1046 19 51 19.8954 51 21V22C51 23.1046 50.1046 24 49 24H16C14.8954 24 14 23.1046 14 22V21ZM49 21H16V22H49V21ZM27 25.557L31.7209 30.4683C32.1037 30.8665 32.0912 31.4995 31.693 31.8822C31.2948 32.265 30.6618 32.2525 30.2791 31.8543L28 29.4833V45C28 45.5523 27.5523 46 27 46C26.4477 46 26 45.5523 26 45V29.4833L23.7209 31.8543C23.3382 32.2525 22.7052 32.265 22.307 31.8822C21.9088 31.4995 21.8963 30.8665 22.2791 30.4683L27 25.557ZM19 26C19.5523 26 20 26.4477 20 27V42.5167L22.2791 40.1457C22.6618 39.7475 23.2948 39.735 23.693 40.1178C24.0912 40.5005 24.1037 41.1335 23.7209 41.5317L19 46.443L14.2791 41.5317C13.8963 41.1335 13.9088 40.5005 14.307 40.1178C14.7052 39.735 15.3382 39.7475 15.7209 40.1457L18 42.5167V27C18 26.4477 18.4477 26 19 26ZM33 28C33 26.8954 33.8954 26 35 26H49C50.1046 26 51 26.8954 51 28V29C51 30.1046 50.1046 31 49 31H35C33.8954 31 33 30.1046 33 29V28ZM49 28H35V29H49V28ZM33 35C33 33.8954 33.8954 33 35 33H49C50.1046 33 51 33.8954 51 35V36C51 37.1046 50.1046 38 49 38H35C33.8954 38 33 37.1046 33 36V35ZM49 35H35V36H49V35ZM33 42C33 40.8954 33.8954 40 35 40H49C50.1046 40 51 40.8954 51 42V43C51 44.1046 50.1046 45 49 45H35C33.8954 45 33 44.1046 33 43V42ZM49 42H35V43H49V42Z"
-                      />
-                    </svg>
-                  ) : (
-                    ''
-                  )}
+          {categories.sort(sortCards).map((value, i) =>
+            categories[i].property === true ? (
+              <div className={styles.tab} key={value.appellation + 'n'}>
+                <div className={styles.value} key={value.appellation + 'm'}>
+                  {value.appellation}
+                </div>
+                <div className={styles.filter} key={value.appellation + 'l'}>
+                  <svg
+                    key={value.appellation + 'r'}
+                    className={styles.sortBtn}
+                    width="20"
+                    height="20"
+                    viewBox="20 6 26 42"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M14 21C14 19.8954 14.8954 19 16 19H49C50.1046 19 51 19.8954 51 21V22C51 23.1046 50.1046 24 49 24H16C14.8954 24 14 23.1046 14 22V21ZM49 21H16V22H49V21ZM27 25.557L31.7209 30.4683C32.1037 30.8665 32.0912 31.4995 31.693 31.8822C31.2948 32.265 30.6618 32.2525 30.2791 31.8543L28 29.4833V45C28 45.5523 27.5523 46 27 46C26.4477 46 26 45.5523 26 45V29.4833L23.7209 31.8543C23.3382 32.2525 22.7052 32.265 22.307 31.8822C21.9088 31.4995 21.8963 30.8665 22.2791 30.4683L27 25.557ZM19 26C19.5523 26 20 26.4477 20 27V42.5167L22.2791 40.1457C22.6618 39.7475 23.2948 39.735 23.693 40.1178C24.0912 40.5005 24.1037 41.1335 23.7209 41.5317L19 46.443L14.2791 41.5317C13.8963 41.1335 13.9088 40.5005 14.307 40.1178C14.7052 39.735 15.3382 39.7475 15.7209 40.1457L18 42.5167V27C18 26.4477 18.4477 26 19 26ZM33 28C33 26.8954 33.8954 26 35 26H49C50.1046 26 51 26.8954 51 28V29C51 30.1046 50.1046 31 49 31H35C33.8954 31 33 30.1046 33 29V28ZM49 28H35V29H49V28ZM33 35C33 33.8954 33.8954 33 35 33H49C50.1046 33 51 33.8954 51 35V36C51 37.1046 50.1046 38 49 38H35C33.8954 38 33 37.1046 33 36V35ZM49 35H35V36H49V35ZM33 42C33 40.8954 33.8954 40 35 40H49C50.1046 40 51 40.8954 51 42V43C51 44.1046 50.1046 45 49 45H35C33.8954 45 33 44.1046 33 43V42ZM49 42H35V43H49V42Z"
+                    />
+                  </svg>
                 </div>
               </div>
             ) : (
               ''
             ),
           )}
+          <div className={styles.tab}>
+            <div className={styles.value}>edit</div>
+            <div className={styles.filter}></div>
+          </div>
         </div>
         {Array.from(data)
           .reverse()
           .map((value) => (
             <>
-              <div className={styles.row}>
-                {activeCategories.id === true ? (
-                  <div className={styles.tab}>
-                    <div className={styles.value}>{value.id}</div>
+              <div className={styles.row} key={value.appellation + 'a'}>
+                {categories[0].property === true ? (
+                  <div className={styles.tab} key={value.appellation + 'b'}>
+                    <div className={styles.value} key={value.appellation + 'c'}>
+                      {value.id}
+                    </div>
                   </div>
                 ) : (
                   ''
                 )}
-                {activeCategories.name === true ? (
-                  <div className={styles.tab}>
-                    <div className={styles.value}>{value.name}</div>
+                {categories[1].property === true ? (
+                  <div className={styles.tab} key={value.appellation + 'd'}>
+                    <div className={styles.value} key={value.appellation + 'e'}>
+                      {value.name}
+                    </div>
                   </div>
                 ) : (
                   ''
                 )}
-                {activeCategories.sex === true ? (
-                  <div className={styles.tab}>
-                    <div className={styles.value}>{value.sex}</div>
+                {categories[2].property === true ? (
+                  <div className={styles.tab} key={value.appellation + 'f'}>
+                    <div className={styles.value} key={value.appellation + 'g'}>
+                      {value.sex}
+                    </div>
                   </div>
                 ) : (
                   ''
                 )}
-                {activeCategories.job === true ? (
-                  <div className={styles.tab}>
-                    <div className={styles.value}>{value.job}</div>
+                {categories[3].property === true ? (
+                  <div className={styles.tab} key={value.appellation + 'h'}>
+                    <div className={styles.value} key={value.appellation + 'i'}>
+                      {value.job}
+                    </div>
                   </div>
                 ) : (
                   ''
                 )}
-                {activeCategories.birthday === true ? (
-                  <div className={styles.tab}>
-                    <div className={styles.value}>{value.birthday}</div>
+                {categories[4].property === true ? (
+                  <div className={styles.tab} key={value.appellation + 'j'}>
+                    <div className={styles.value} key={value.appellation + 'k'}>
+                      {value.birthday}
+                    </div>
                   </div>
                 ) : (
                   ''
                 )}
-                <div className={styles.tab}>
-                  <div className={styles.value}>
+                <div className={styles.tab} key={value.appellation + 's'}>
+                  <div className={styles.value} key={value.appellation + 't'}>
                     <svg
+                      key={value.appellation + 'u'}
                       className={styles.editBtn}
                       width="24"
                       height="24"
