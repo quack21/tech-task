@@ -1,12 +1,12 @@
 import React from 'react';
 import styles from './content.module.scss';
 import data from '../../assets/data.json';
-import { Reorder } from 'framer-motion';
 
 function Content() {
-  const [renew, setRenew] = React.useState(0);
   const [open, setOpen] = React.useState(false);
+
   const [currentCard, setCurrentCard] = React.useState(null);
+
   const [categories, setCategories] = React.useState([
     { appellation: 'id', property: true, order: 1, id: 1 },
     { appellation: 'name', property: true, order: 2, id: 2 },

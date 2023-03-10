@@ -24,7 +24,7 @@ import styles from './header.module.scss';
 //   '20',
 // ];
 
-const list = ['1', '2', '32'];
+const list = ['1', '2', '3'];
 
 function Header() {
   const [active, setActive] = React.useState('');
@@ -36,10 +36,10 @@ function Header() {
         <div className={styles.lists}>
           {list.map((value, i) => (
             <div
-              className={active == i ? styles.activeList : styles.list}
+              className={active === i ? styles.activeList : styles.list}
               onClick={() => setActive(i)}>
               Список сотрудников {value}
-              {active == i ? (
+              {active === i ? (
                 <svg
                   className={styles.closeSVG}
                   onClick={() => {
