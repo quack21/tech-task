@@ -15,35 +15,43 @@ function Content() {
     { appellation: 'birthday', property: true, order: 5, id: 5 },
   ]);
 
+
   function chooseTabs(i) {
     categories[i].property = !categories[i].property;
     setOpen(false);
   }
 
   function dragStartHandler(e, card) {
-    setCurrentCard(card);
+    if (card.property) {
+      setCurrentCard(card);
+    }
   }
+
   function dragEndHandler(e) {
     e.target.style.background = 'white';
   }
+
   function dragOverHandler(e) {
     e.preventDefault();
     e.target.style.background = 'lightgrey';
   }
+
   function dropHandler(e, card) {
-    e.preventDefault();
-    setCategories(
-      categories.map((c) => {
-        if (c.id === card.id) {
-          return { ...c, order: currentCard.order };
-        }
-        if (c.id === currentCard.id) {
-          return { ...c, order: card.order };
-        }
-        return c;
-      }),
-    );
     e.target.style.background = 'white';
+    if (card.property) {
+      e.preventDefault();
+      setCategories(
+        categories.map((c) => {
+          if (c.id === card.id) {
+            return { ...c, order: currentCard.order };
+          }
+          if (c.id === currentCard.id) {
+            return { ...c, order: card.order };
+          }
+          return c;
+        }),
+      );
+    }
   }
 
   const sortCards = (a, b) => {
@@ -74,17 +82,15 @@ function Content() {
               <div
                 className={styles.chooseContainer}
                 key={value.appellation + 'o'}
-                draggable={true}
+                draggable={value.property ? true : false}
                 onDragStart={(e) => dragStartHandler(e, value)}
                 onDragLeave={(e) => dragEndHandler(e)}
                 onDragEnd={(e) => dragEndHandler(e)}
                 onDragOver={(e) => dragOverHandler(e)}
                 onDrop={(e) => dropHandler(e, value)}>
-                <div
-                  key={value.appellation + 'p'}
-                  className={styles.choose}
-                  onClick={() => chooseTabs(i)}>
+                <div key={value.appellation + 'p'} className={styles.choose}>
                   <svg
+                    onClick={() => chooseTabs(i)}
                     key={value.appellation + 'q'}
                     className={styles.selectSVG}
                     width="20"
@@ -154,7 +160,7 @@ function Content() {
                 {categories[0].property === true ? (
                   <div className={styles.tab} key={value.appellation + 'b'}>
                     <div className={styles.value} key={value.appellation + 'c'}>
-                      {value.id}
+                      {value[categories[0].appellation]}
                     </div>
                   </div>
                 ) : (
@@ -163,7 +169,7 @@ function Content() {
                 {categories[1].property === true ? (
                   <div className={styles.tab} key={value.appellation + 'd'}>
                     <div className={styles.value} key={value.appellation + 'e'}>
-                      {value.name}
+                      {value[categories[1].appellation]}
                     </div>
                   </div>
                 ) : (
@@ -172,7 +178,7 @@ function Content() {
                 {categories[2].property === true ? (
                   <div className={styles.tab} key={value.appellation + 'f'}>
                     <div className={styles.value} key={value.appellation + 'g'}>
-                      {value.sex}
+                      {value[categories[2].appellation]}
                     </div>
                   </div>
                 ) : (
@@ -181,7 +187,7 @@ function Content() {
                 {categories[3].property === true ? (
                   <div className={styles.tab} key={value.appellation + 'h'}>
                     <div className={styles.value} key={value.appellation + 'i'}>
-                      {value.job}
+                      {value[categories[3].appellation]}
                     </div>
                   </div>
                 ) : (
@@ -190,7 +196,7 @@ function Content() {
                 {categories[4].property === true ? (
                   <div className={styles.tab} key={value.appellation + 'j'}>
                     <div className={styles.value} key={value.appellation + 'k'}>
-                      {value.birthday}
+                      {value[categories[4].appellation]}
                     </div>
                   </div>
                 ) : (
