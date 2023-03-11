@@ -14,18 +14,25 @@
       top: 26px;
       right: 26px;
       width: 240px;
-      height: 200px;
+      height: 215px;
       border: 1px solid rgb(0, 0, 0);
       border-radius: 3px;
 
       .chooseContainer {
+        border-bottom: 1px solid rgb(240, 240, 240);
         width: 100%;
-        height: 40px;
+        height: 42px;
         display: flex;
         flex-direction: column;
         background-color: white;
         align-items: center;
         cursor: grab;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
 
         .choose {
           width: 100%;
@@ -33,10 +40,6 @@
           text-transform: uppercase;
           display: flex;
           align-items: center;
-
-          &:hover {
-            background-color: rgb(238, 238, 238);
-          }
 
           .selectSVG {
             margin-left: 10px;

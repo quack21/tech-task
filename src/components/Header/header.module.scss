@@ -1,16 +1,7 @@
-$color1: #122c34;
-$color2: #0b4f6c;
-$color3: #2978aa;
-$color4: #006476;
-$color5: #4ea5d9;
-$color6: #09d0cc;
-$color7: #6a9b9b;
-$background1: white;
-
 .container {
   width: 100%;
   height: 90px;
-  border-bottom: 1px solid $color2;
+  border-bottom: 1px solid black;
   .content {
     width: 100%;
     height: 100%;
@@ -26,65 +17,93 @@ $background1: white;
       height: 100%;
     }
     .lists {
-      padding-left: 10px;
-      width: calc(100% - 200px);
+      overflow-x: auto;
+      width: calc(100% - 260px);
       height: 100%;
       display: flex;
       flex-direction: row;
       justify-content: flex-start;
       align-items: center;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
 
-      .list {
+      .tabContainer {
         display: flex;
-        flex-direction: row;
-        justify-content: center;
+        justify-content: row;
         align-items: center;
-        white-space: nowrap;
-        max-width: 170px;
-        height: 25px;
-        transition: 0.1s ease-in-out;
-        padding: 5px;
         margin-right: 5px;
 
-        &:hover {
-          transition: 0.1s ease-in-out;
-          cursor: pointer;
-          border-radius: 5px;
-          background-color: rgb(243, 242, 242);
+        .closeSVG {
+          height: 35px;
+          border-top-right-radius: 10px;
+          background-color: rgb(240, 240, 240);
+          margin-right: 5px;
+          &:hover {
+            cursor: pointer;
+            background-color: rgb(209, 209, 209);
+          }
+          &:active {
+            background-color: grey;
+          }
         }
-        &:active {
-          background-color: rgb(206, 206, 206);
+
+        .list {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          white-space: nowrap;
+          max-width: 200px;
+          height: 25px;
+          padding: 5px;
+          border-bottom-left-radius: 10px;
+
+          &:hover {
+            cursor: pointer;
+            background-color: rgb(240, 240, 240);
+          }
+          &:active {
+            background-color: rgb(209, 209, 209);
+          }
+        }
+
+        .activeList {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          max-width: 200px;
+          white-space: nowrap;
+          height: 25px;
+          transition: 0.1s ease-in-out;
+          padding: 5px;
+          background-color: rgb(240, 240, 240);
+          border-bottom-left-radius: 10px;
+
+          &:hover {
+            cursor: pointer;
+          }
         }
       }
 
-      .activeList {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        max-width: 200px;
-        white-space: nowrap;
-        height: 25px;
-        transition: 0.3s ease-in-out;
-        padding: 5px;
-        margin-right: 5px;
-        background-color: rgb(250, 250, 250);
-        border-bottom: 2px solid $color1;
-        border-radius: 5px;
+      &::-webkit-scrollbar {
+        width: 5px;
+        height: 10px;
+        background-color: #f9f9fd;
+      }
 
-        &:hover {
-          cursor: pointer;
-        }
+      &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: #b6b6b6;
+      }
 
-        .closeSVG {
-          margin-left: 5px;
-          margin-top: 4px;
-
-          &:hover {
-            background-color: rgb(206, 206, 206);
-            border-radius: 10px;
-          }
-        }
+      &::-webkit-scrollbar-track {
+        border-radius: 10px;
+        background-color: #dadadb;
       }
     }
   }
