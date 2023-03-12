@@ -1,18 +1,18 @@
 import React from 'react';
 import styles from './header.module.scss';
 
-function Header({ lists, setLists, active, setActive }) {
-  
+function Header({ lists, setLists, active, setActive, changes, setChanges }) {
   function closeTab(i) {
     lists.splice(i, 1);
     setLists([...lists]);
     setActive(0);
+    setChanges(!changes);
   }
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <div className={styles.logo}>LOGO</div>
+        <div className={styles.logo}>Logo</div>
         <div className={styles.lists}>
           {lists.map((value, i) => (
             <div className={styles.tabContainer} key={value.id + 'abc'}>

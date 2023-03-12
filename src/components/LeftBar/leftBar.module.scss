@@ -20,7 +20,8 @@
       width: 100%;
       height: 80px;
       &:hover {
-        background-color: rgb(244, 244, 244);
+        transition: 0.15s ease-in-out;
+        background-color: rgba(209, 209, 255, 0.158);
         cursor: pointer;
       }
     }

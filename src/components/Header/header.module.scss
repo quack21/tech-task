@@ -40,11 +40,12 @@
         .closeSVG {
           height: 35px;
           border-top-right-radius: 10px;
-          background-color: rgb(240, 240, 240);
+          background-color: rgba(209, 209, 255, 0.315);
           margin-right: 5px;
+          transition: 0.15s ease-in-out;
           &:hover {
             cursor: pointer;
-            background-color: rgb(209, 209, 209);
+            background-color: rgba(209, 209, 255, 0.575);
           }
           &:active {
             background-color: grey;
@@ -64,10 +65,10 @@
 
           &:hover {
             cursor: pointer;
-            background-color: rgb(240, 240, 240);
+            background-color: rgba(209, 209, 255, 0.315)
           }
           &:active {
-            background-color: rgb(209, 209, 209);
+            background-color: rgba(209, 209, 255, 0.596)
           }
         }
 
@@ -81,7 +82,7 @@
           height: 25px;
           transition: 0.1s ease-in-out;
           padding: 5px;
-          background-color: rgb(240, 240, 240);
+          background-color: rgba(209, 209, 255, 0.315);
           border-bottom-left-radius: 10px;
 
           &:hover {

@@ -1,10 +1,7 @@
 import React from 'react';
 import styles from './leftBar.module.scss';
-import data from '../../assets/data.json';
 
-function LeftBar({ lists, setLists }) {
-  /* */
-
+function LeftBar({ lists, setLists, data, changes, setChanges }) {
   function addNewList() {
     if (lists.length === 0) {
       setLists([
@@ -20,6 +17,7 @@ function LeftBar({ lists, setLists }) {
           ],
         },
       ]);
+      setChanges(!changes);
     } else if (lists.length < 20) {
       setLists([
         ...lists,
@@ -35,6 +33,7 @@ function LeftBar({ lists, setLists }) {
           ],
         },
       ]);
+      setChanges(!changes);
     } else {
       alert('Достигнуто максимально возможное количество списков!');
     }
