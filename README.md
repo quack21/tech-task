@@ -1,2 +1,3 @@
 Package manager - yarn
-const libs = [axios, qs, react, sass];
+
+const libs = [react, react-router, axios, qs, sass];
