@@ -1,8 +1,7 @@
 import React from 'react';
 import styles from './content.module.scss';
 
-const Content = React.memo(function Content({ lists, active, isLoading, changes, setChanges }) {
-
+export default React.memo(function Content({ lists, active, isLoading, changes, setChanges }) {
   const [open, setOpen] = React.useState(false);
 
   const [currentCard, setCurrentCard] = React.useState(null);
@@ -197,5 +196,3 @@ const Content = React.memo(function Content({ lists, active, isLoading, changes,
     </div>
   );
 });
-
-export default Content;

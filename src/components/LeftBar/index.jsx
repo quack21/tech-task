@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './leftBar.module.scss';
 
-const LeftBar = React.memo(function LeftBar({
+export default React.memo(function LeftBar({
   lists,
   setLists,
   data,
@@ -106,5 +106,3 @@ const LeftBar = React.memo(function LeftBar({
     </div>
   );
 });
-
-export default LeftBar;

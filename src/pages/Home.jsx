@@ -7,7 +7,7 @@ import axios from 'axios';
 import qs from 'qs';
 import { useParams, useNavigate } from 'react-router-dom';
 
-const Home = React.memo(function Home() {
+export default React.memo(function Home() {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const { orderList } = useParams();
@@ -140,5 +140,3 @@ const Home = React.memo(function Home() {
     </div>
   );
 });
-
-export default Home;

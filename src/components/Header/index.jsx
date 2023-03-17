@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './header.module.scss';
 
-const Header = React.memo(function Header({
+export default React.memo(function Header({
   lists,
   setLists,
   active,
@@ -70,5 +70,3 @@ const Header = React.memo(function Header({
     </div>
   );
 });
-
-export default Header;
