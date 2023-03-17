@@ -7,7 +7,9 @@ import axios from 'axios';
 import qs from 'qs';
 import { useParams, useNavigate } from 'react-router-dom';
 
-function Home() {
+const Home = React.memo(function Home() {
+  const [isLoading, setIsLoading] = React.useState(true);
+
   const { orderList } = useParams();
 
   const navigate = useNavigate();
@@ -17,8 +19,6 @@ function Home() {
   const [changes, setChanges] = React.useState(false);
 
   const [data, setData] = React.useState(null);
-
-  const [isLoading, setIsLoading] = React.useState(true);
 
   const [active, setActive] = React.useState(0);
 
@@ -37,12 +37,10 @@ function Home() {
   ]);
 
   async function getData() {
-      await axios
-        .get('https://62f503b3535c0c50e767cf0c.mockapi.io/api/v1/tasks')
-        .then((response) => {
-          lists[0].listData = response.data;
-          setData(response.data);
-        });
+    await axios.get('https://62f503b3535c0c50e767cf0c.mockapi.io/api/v1/tasks').then((response) => {
+      lists[0].listData = response.data;
+      setData(response.data);
+    });
   }
 
   function saveForURL() {
@@ -69,36 +67,11 @@ function Home() {
           id: newId,
           listData: lists[0].listData,
           properties: [
-            {
-              id: 1,
-              order: 1,
-              show: true,
-              appellation: 'id',
-            },
-            {
-              id: 2,
-              order: 2,
-              show: true,
-              appellation: 'name',
-            },
-            {
-              id: 3,
-              order: 3,
-              show: true,
-              appellation: 'sex',
-            },
-            {
-              id: 4,
-              order: 4,
-              show: true,
-              appellation: 'job',
-            },
-            {
-              id: 5,
-              order: 5,
-              show: true,
-              appellation: 'birthday',
-            },
+            { id: 1, order: 1, show: true, appellation: 'id' },
+            { id: 2, order: 2, show: true, appellation: 'name' },
+            { id: 3, order: 3, show: true, appellation: 'sex' },
+            { id: 4, order: 4, show: true, appellation: 'job' },
+            { id: 5, order: 5, show: true, appellation: 'birthday' },
           ],
         });
       }
@@ -144,6 +117,7 @@ function Home() {
         setActive={setActive}
         changes={changes}
         setChanges={setChanges}
+        isLoading={isLoading}
       />
       <div className={styles.content}>
         <LeftBar
@@ -152,6 +126,7 @@ function Home() {
           data={data}
           changes={changes}
           setChanges={setChanges}
+          isLoading={isLoading}
         />
         <Content
           lists={lists}
@@ -164,6 +139,6 @@ function Home() {
       </div>
     </div>
   );
-}
+});
 
 export default Home;

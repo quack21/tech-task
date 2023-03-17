@@ -1,23 +1,37 @@
+$PrimaryColor: #2196f3;
+$SecondaryColor: #607d8b;
+$TextColor: #333333;
+$AccentColor: #ffc107;
+$LightAccentColor: #ffc1075b;
+$HoverColor: #f5f5f5;
+$DarkHoverColor: #cfcfcf;
+
 .container {
   width: 100%;
   height: 90px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid $SecondaryColor;
+  color: $TextColor;
+
   .content {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
-    color: black;
+
     .logo {
       display: flex;
       justify-content: center;
       align-items: center;
       width: 260px;
       height: 100%;
+      font-weight: 900;
+      font-size: 32px;
+      color: $PrimaryColor;
     }
     .lists {
       overflow-x: auto;
+      overflow-y: hidden;
       width: calc(100% - 260px);
       height: 100%;
       display: flex;
@@ -30,25 +44,49 @@
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
+      font-weight: 500;
 
-      .tabContainer {
+      .animatedShow {
+        flex-shrink: 0;
+        margin-right: 8px;
         display: flex;
         justify-content: row;
         align-items: center;
-        margin-right: 5px;
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        border: 1px solid $DarkHoverColor;
+
+        animation: 0.25s show ease;
+
+        @keyframes show {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        &:hover {
+          cursor: pointer;
+          background-color: $HoverColor;
+          transition: 0.15s ease-in-out;
+          .closeSVG {
+            background-color: $HoverColor;
+            transition: 0.15s ease-in-out;
+          }
+        }
 
         .closeSVG {
           height: 35px;
           border-top-right-radius: 10px;
-          background-color: rgba(209, 209, 255, 0.315);
-          margin-right: 5px;
-          transition: 0.15s ease-in-out;
+          background-color: white;
+          fill: rgba(128, 128, 128, 0.404);
+
           &:hover {
-            cursor: pointer;
-            background-color: rgba(209, 209, 255, 0.575);
-          }
-          &:active {
-            background-color: grey;
+            transition: 0.15s ease-in-out;
+            background-color: $DarkHoverColor;
+            fill: black;
           }
         }
 
@@ -58,17 +96,37 @@
           justify-content: center;
           align-items: center;
           white-space: nowrap;
-          max-width: 200px;
           height: 25px;
           padding: 5px;
           border-bottom-left-radius: 10px;
+        }
+      }
+
+      .activeTabContainer {
+        flex-shrink: 0;
+        margin-right: 8px;
+        display: flex;
+        justify-content: row;
+        align-items: center;
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        background-color: $LightAccentColor;
+        transition: 0.2s ease-in-out;
+        border: 1px solid $HoverColor;
+
+        .closeActiveSVG {
+          height: 35px;
+          border-top-right-radius: 10px;
+          transition: 0.2s ease-in;
 
           &:hover {
             cursor: pointer;
-            background-color: rgba(209, 209, 255, 0.315)
+            background-color: $AccentColor;
           }
+
           &:active {
-            background-color: rgba(209, 209, 255, 0.596)
+            cursor: pointer;
+            background-color: orange;
           }
         }
 
@@ -77,17 +135,55 @@
           flex-direction: row;
           justify-content: center;
           align-items: center;
-          max-width: 200px;
           white-space: nowrap;
           height: 25px;
-          transition: 0.1s ease-in-out;
           padding: 5px;
-          background-color: rgba(209, 209, 255, 0.315);
           border-bottom-left-radius: 10px;
+        }
+      }
+
+      .tabContainer {
+        flex-shrink: 0;
+        margin-right: 8px;
+        display: flex;
+        justify-content: row;
+        align-items: center;
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        border: 1px solid $DarkHoverColor;
+
+        &:hover {
+          cursor: pointer;
+          background-color: $HoverColor;
+          transition: 0.15s ease-in-out;
+          .closeSVG {
+            background-color: $HoverColor;
+            transition: 0.15s ease-in-out;
+          }
+        }
+
+        .closeSVG {
+          height: 35px;
+          border-top-right-radius: 10px;
+          background-color: white;
+          fill: rgba(128, 128, 128, 0.404);
 
           &:hover {
-            cursor: pointer;
+            transition: 0.15s ease-in-out;
+            background-color: $DarkHoverColor;
+            fill: black;
           }
+        }
+
+        .list {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          white-space: nowrap;
+          height: 25px;
+          padding: 5px;
+          border-bottom-left-radius: 10px;
         }
       }
 

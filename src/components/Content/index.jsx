@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from './content.module.scss';
 
-function Content({ lists, active, isLoading, changes, setChanges }) {
+const Content = React.memo(function Content({ lists, active, isLoading, changes, setChanges }) {
+
   const [open, setOpen] = React.useState(false);
 
   const [currentCard, setCurrentCard] = React.useState(null);
@@ -23,7 +24,7 @@ function Content({ lists, active, isLoading, changes, setChanges }) {
 
   function dragOverHandler(e) {
     e.preventDefault();
-    e.target.style.background = 'lightgrey';
+    e.target.style.background = '#cfcfcf';
   }
 
   function dropHandler(e, card) {
@@ -31,13 +32,15 @@ function Content({ lists, active, isLoading, changes, setChanges }) {
     e.preventDefault();
     if (card.show) {
       lists[active].properties = lists[active].properties.map((c) => {
-        if (c.id === card.id) {
-          return { ...c, order: currentCard.order };
+        if (currentCard !== null) {
+          if (c.id === card.id) {
+            return { ...c, order: currentCard.order };
+          }
+          if (c.id === currentCard.id) {
+            return { ...c, order: card.order };
+          }
+          return c;
         }
-        if (c.id === currentCard.id) {
-          return { ...c, order: card.order };
-        }
-        return c;
       });
     }
     setChanges(!changes);
@@ -68,7 +71,7 @@ function Content({ lists, active, isLoading, changes, setChanges }) {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg">
                 <path d="M294 66H218C211.373 66 206 71.3726 206 78V106.319C206 117.01 193.074 122.364 185.515 114.804L165.49 94.7797C160.804 90.0934 153.206 90.0934 148.52 94.7797L94.7797 148.52C90.0934 153.206 90.0934 160.804 94.7797 165.49L114.804 185.515C122.364 193.074 117.01 206 106.319 206H78C71.3726 206 66 211.373 66 218V294C66 300.627 71.3726 306 78 306H106.319C117.01 306 122.364 318.926 114.804 326.485L94.7797 346.51C90.0934 351.196 90.0934 358.794 94.7797 363.48L148.52 417.22C153.206 421.907 160.804 421.907 165.49 417.22L185.515 397.196C193.074 389.636 206 394.99 206 405.681V434C206 440.627 211.373 446 218 446H294C300.627 446 306 440.627 306 434V405.681C306 394.99 318.926 389.636 326.485 397.196L346.51 417.22C351.196 421.907 358.794 421.907 363.48 417.22L417.22 363.48C421.907 358.794 421.907 351.196 417.22 346.51L397.196 326.485C389.636 318.926 394.99 306 405.681 306H434C440.627 306 446 300.627 446 294V218C446 211.373 440.627 206 434 206H405.681C394.99 206 389.636 193.074 397.196 185.515L417.22 165.49C421.907 160.804 421.907 153.206 417.22 148.52L363.48 94.7797C358.794 90.0934 351.196 90.0934 346.51 94.7797L326.485 114.804C318.926 122.364 306 117.01 306 106.319V78C306 71.3726 300.627 66 294 66Z" />
-                <circle cx="256.5" cy="255.5" r="102.5" stroke="black" strokeWidth="24" />
+                <circle cx="256.5" cy="255.5" r="102.5" stroke="#333333" strokeWidth="24" />
               </svg>
               {open ? (
                 <div className={styles.modalSettings}>
@@ -95,7 +98,7 @@ function Content({ lists, active, isLoading, changes, setChanges }) {
                           <path
                             key={value.appellation + '4'}
                             d="M31.4517 11.3659C31.8429 10.7366 32.7589 10.7366 33.1501 11.3659L40.2946 22.8568C40.4323 23.0782 40.651 23.2371 40.9041 23.2996L54.0403 26.5435C54.7598 26.7212 55.0428 27.5923 54.5652 28.1589L45.8445 38.5045C45.6764 38.7039 45.5929 38.961 45.6117 39.221L46.5858 52.7168C46.6392 53.4559 45.8982 53.9942 45.2117 53.7151L32.6776 48.6182C32.4361 48.52 32.1657 48.52 31.9242 48.6182L19.39 53.7151C18.7036 53.9942 17.9626 53.4559 18.016 52.7168L18.9901 39.221C19.0089 38.961 18.9253 38.7039 18.7573 38.5045L10.0366 28.1589C9.559 27.5923 9.84204 26.7212 10.5615 26.5435L23.6977 23.2996C23.9508 23.2371 24.1695 23.0782 24.3072 22.8568L31.4517 11.3659Z"
-                            fill={value.show === true ? 'yellow' : 'white'}
+                            fill={value.show === true ? '#ffc107a4' : 'white'}
                           />
                           <path
                             key={value.appellation + '5'}
@@ -116,7 +119,7 @@ function Content({ lists, active, isLoading, changes, setChanges }) {
             </div>
             <div className={styles.content}>
               <div className={styles.row}>
-                {lists[active].properties.sort(sortCards).map((value, i) =>
+                {lists[active].properties.sort(sortCards).map((value) =>
                   value.show === true ? (
                     <div className={styles.tab} key={value.appellation + '6'}>
                       <div className={styles.value} key={value.appellation + '7'}>
@@ -129,12 +132,9 @@ function Content({ lists, active, isLoading, changes, setChanges }) {
                           width="20"
                           height="20"
                           viewBox="20 6 26 42"
-                          fill="none"
                           xmlns="http://www.w3.org/2000/svg">
                           <path
                             key={value.appellation + '10'}
-                            fillRule="evenodd"
-                            clipRule="evenodd"
                             d="M14 21C14 19.8954 14.8954 19 16 19H49C50.1046 19 51 19.8954 51 21V22C51 23.1046 50.1046 24 49 24H16C14.8954 24 14 23.1046 14 22V21ZM49 21H16V22H49V21ZM27 25.557L31.7209 30.4683C32.1037 30.8665 32.0912 31.4995 31.693 31.8822C31.2948 32.265 30.6618 32.2525 30.2791 31.8543L28 29.4833V45C28 45.5523 27.5523 46 27 46C26.4477 46 26 45.5523 26 45V29.4833L23.7209 31.8543C23.3382 32.2525 22.7052 32.265 22.307 31.8822C21.9088 31.4995 21.8963 30.8665 22.2791 30.4683L27 25.557ZM19 26C19.5523 26 20 26.4477 20 27V42.5167L22.2791 40.1457C22.6618 39.7475 23.2948 39.735 23.693 40.1178C24.0912 40.5005 24.1037 41.1335 23.7209 41.5317L19 46.443L14.2791 41.5317C13.8963 41.1335 13.9088 40.5005 14.307 40.1178C14.7052 39.735 15.3382 39.7475 15.7209 40.1457L18 42.5167V27C18 26.4477 18.4477 26 19 26ZM33 28C33 26.8954 33.8954 26 35 26H49C50.1046 26 51 26.8954 51 28V29C51 30.1046 50.1046 31 49 31H35C33.8954 31 33 30.1046 33 29V28ZM49 28H35V29H49V28ZM33 35C33 33.8954 33.8954 33 35 33H49C50.1046 33 51 33.8954 51 35V36C51 37.1046 50.1046 38 49 38H35C33.8954 38 33 37.1046 33 36V35ZM49 35H35V36H49V35ZM33 42C33 40.8954 33.8954 40 35 40H49C50.1046 40 51 40.8954 51 42V43C51 44.1046 50.1046 45 49 45H35C33.8954 45 33 44.1046 33 43V42ZM49 42H35V43H49V42Z"
                           />
                         </svg>
@@ -144,12 +144,11 @@ function Content({ lists, active, isLoading, changes, setChanges }) {
                     ''
                   ),
                 )}
-                <div className={styles.tab}>
-                  <div className={styles.value}>edit</div>
-                  <div className={styles.filter}></div>
+                <div className={styles.tabEdit}>
+                  <div className={styles.valueEdit}>edit</div>
                 </div>
               </div>
-              {lists[active].listData.map((value, i) => (
+              {lists[active].listData.map((value) => (
                 <>
                   <div className={styles.row} key={value.id + '11'}>
                     {lists[active].properties.sort(sortCards).map((prop) => (
@@ -165,8 +164,8 @@ function Content({ lists, active, isLoading, changes, setChanges }) {
                         )}
                       </>
                     ))}
-                    <div className={styles.tab} key={value.id + '14'}>
-                      <div className={styles.value} key={value.id + '15'}>
+                    <div className={styles.tabEdit} key={value.id + '14'}>
+                      <div className={styles.valueEdit} key={value.id + '15'}>
                         <svg
                           key={value.id + '16'}
                           className={styles.editBtn}
@@ -197,6 +196,6 @@ function Content({ lists, active, isLoading, changes, setChanges }) {
       )}
     </div>
   );
-}
+});
 
 export default Content;
