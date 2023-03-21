@@ -7,22 +7,36 @@ import axios from 'axios';
 import qs from 'qs';
 import { useParams, useNavigate } from 'react-router-dom';
 
-export default React.memo(function Home() {
-  const [isLoading, setIsLoading] = React.useState(true);
+const Home: React.FC = () => {
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
   const { orderList } = useParams();
 
   const navigate = useNavigate();
 
-  const [stringifyOrderList, setStringifyOrderList] = React.useState('');
+  const [stringifyOrderList, setStringifyOrderList] = React.useState<string>('');
 
-  const [changes, setChanges] = React.useState(false);
+  const [changes, setChanges] = React.useState<boolean>(false);
 
-  const [data, setData] = React.useState(null);
+  const [data, setData] = React.useState<
+    { birthday: string; id: string; sex: string; job: string; name: string }[]
+  >([{ birthday: '', id: '', sex: '', job: '', name: '' }]);
 
-  const [active, setActive] = React.useState(0);
+  const [active, setActive] = React.useState<number>(0);
 
-  const [lists, setLists] = React.useState([
+  const [lists, setLists] = React.useState<
+    {
+      new?: boolean;
+      id: number;
+      listData: { birthday: string; id: string; sex: string; job: string; name: string }[];
+      properties: {
+        id: number;
+        order: number;
+        show: boolean;
+        appellation: string;
+      }[];
+    }[]
+  >([
     {
       id: 1,
       listData: data,
@@ -44,9 +58,9 @@ export default React.memo(function Home() {
   }
 
   function saveForURL() {
-    let toSend = { a: [] };
+    let toSend: { a: number[] } = { a: [] };
     for (let i = 0; i < lists.length; i++) {
-      let localList = [];
+      let localList: any = [];
       for (let j = 0; j < lists[i].properties.length; j++) {
         if (lists[i].properties[j].show) {
           localList.push(lists[i].properties[j].id);
@@ -59,37 +73,41 @@ export default React.memo(function Home() {
   }
 
   function byURL() {
-    const bb = qs.parse(orderList);
-    if (bb.a.length > lists.length) {
-      while (bb.a.length !== lists.length) {
-        let newId = lists.length + 1;
-        lists.push({
-          id: newId,
-          listData: lists[0].listData,
-          properties: [
-            { id: 1, order: 1, show: true, appellation: 'id' },
-            { id: 2, order: 2, show: true, appellation: 'name' },
-            { id: 3, order: 3, show: true, appellation: 'sex' },
-            { id: 4, order: 4, show: true, appellation: 'job' },
-            { id: 5, order: 5, show: true, appellation: 'birthday' },
-          ],
-        });
-      }
-    }
-
-    for (let i = 0; i < lists.length; i++) {
-      let lastOrder = bb.a[i].length + 1;
-      for (let j = 0; j < lists[i].properties.length; j++) {
-        lists[i].properties[j].show = bb.a[i].includes(String(j + 1));
-        if (bb.a[i].includes(String(j + 1))) {
-          lists[i].properties[j].order = bb.a[i].indexOf(String(j + 1));
-        } else {
-          lists[i].properties[j].order = lastOrder;
-          lastOrder += 1;
+    if (orderList !== undefined) {
+      const bb: any = qs.parse(orderList);
+      if (bb.a !== undefined && bb.a.length !== undefined) {
+        if (bb.a.length > lists.length) {
+          while (bb.a.length !== lists.length) {
+            let newId: number = lists.length + 1;
+            lists.push({
+              id: newId,
+              listData: lists[0].listData,
+              properties: [
+                { id: 1, order: 1, show: true, appellation: 'id' },
+                { id: 2, order: 2, show: true, appellation: 'name' },
+                { id: 3, order: 3, show: true, appellation: 'sex' },
+                { id: 4, order: 4, show: true, appellation: 'job' },
+                { id: 5, order: 5, show: true, appellation: 'birthday' },
+              ],
+            });
+          }
         }
+
+        for (let i = 0; i < lists.length; i++) {
+          let lastOrder: number = bb.a[i].length + 1;
+          for (let j = 0; j < lists[i].properties.length; j++) {
+            lists[i].properties[j].show = bb.a[i].includes(String(j + 1));
+            if (bb.a[i].includes(String(j + 1))) {
+              lists[i].properties[j].order = bb.a[i].indexOf(String(j + 1));
+            } else {
+              lists[i].properties[j].order = lastOrder;
+              lastOrder += 1;
+            }
+          }
+        }
+        setIsLoading(false);
       }
-    }
-    setIsLoading(false);
+    } // bb.a = undefined || bb.a.length == undefined
   }
 
   React.useEffect(() => {
@@ -130,8 +148,8 @@ export default React.memo(function Home() {
         />
         <Content
           lists={lists}
-          active={active}
           setLists={setLists}
+          active={active}
           isLoading={isLoading}
           changes={changes}
           setChanges={setChanges}
@@ -139,4 +157,6 @@ export default React.memo(function Home() {
       </div>
     </div>
   );
-});
+};
+
+export default Home;

@@ -1,7 +1,27 @@
 import React from 'react';
 import styles from './header.module.scss';
 
-export default React.memo(function Header({
+type HeaderProps = {
+  lists: {
+    new?: boolean;
+    id: number;
+    listData: null | { birthday: string; id: string; sex: string; job: string; name: string }[];
+    properties: {
+      id: number;
+      order: number;
+      show: boolean;
+      appellation: string;
+    }[];
+  }[];
+  setLists: any;
+  active: number;
+  setActive: any;
+  changes: boolean;
+  setChanges: any;
+  isLoading: boolean;
+};
+
+const Header: React.FC<HeaderProps> = ({
   lists,
   setLists,
   active,
@@ -9,15 +29,15 @@ export default React.memo(function Header({
   changes,
   setChanges,
   isLoading,
-}) {
-  function closeTab(i) {
+}) => {
+  function closeTab(i: number) {
     lists.splice(i, 1);
     setLists([...lists]);
     setActive(0);
     setChanges(!changes);
   }
 
-  function settingActive(i) {
+  function settingActive(i: number) {
     if (!isLoading) {
       setActive(i);
     }
@@ -69,4 +89,6 @@ export default React.memo(function Header({
       </div>
     </div>
   );
-});
+};
+
+export default Header;

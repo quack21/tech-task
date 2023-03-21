@@ -1,14 +1,33 @@
 import React from 'react';
 import styles from './leftBar.module.scss';
 
-export default React.memo(function LeftBar({
+type LeftBarProps = {
+  lists: {
+    new?: boolean;
+    id: number;
+    listData: null | { birthday: string; id: string; sex: string; job: string; name: string }[];
+    properties: {
+      id: number;
+      order: number;
+      show: boolean;
+      appellation: string;
+    }[];
+  }[];
+  setLists: any;
+  data: null | { birthday: string; id: string; sex: string; job: string; name: string }[];
+  changes: boolean;
+  setChanges: any;
+  isLoading: boolean;
+};
+
+const LeftBar: React.FC<LeftBarProps> = ({
   lists,
   setLists,
   data,
   changes,
   setChanges,
   isLoading,
-}) {
+}) => {
   function addNewList() {
     if (lists.length === 0) {
       if (!isLoading) {
@@ -105,4 +124,6 @@ export default React.memo(function LeftBar({
       </div>
     </div>
   );
-});
+};
+
+export default LeftBar;
